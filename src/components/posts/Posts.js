@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import PostService from './../../services/PostService'
 import PostList from './PostList'
 import PostInsert from './PostInsert'
+import Alerts from './../alerts/Alerts'
 
 class Posts extends Component {
     constructor(props) {
         super(props);
         this.state = {
           posts: [],
-          errors: [],
+          alerts: [],
           isLoaded: false
         };
     
@@ -22,34 +23,36 @@ class Posts extends Component {
             isLoaded: true
         });
         }, (response) => {
-            this.errors.push(response.errors)
+            // create an error alert
+            this.addAlert('warning',response.name,response.description,5000);
         })
-
+        
         this.handleInsert = this.handleInsert.bind(this);
         this.handleError = this.handleError.bind(this);
     }
 
     handleInsert(data) {
-        console.log("adding the new post to the array");
         var newValues = this.state.posts.concat([data]);
-        //newValues.unshift(data);
+        this.addAlert('success','Success','New record added',5000);
+
         this.setState({
             posts: newValues,
-            isLoaded: true
+            isLoaded: true,
         })
-
-        console.log(this.state.posts);
-        //this.state.posts.unshift(data);
     }
 
     handleError(error)
     {
-        console.log(error);
-        //this.state.errors.push(error);
-        var newValues = this.state.errors.concat([error]);
-        //newValues.unshift(error);
+        // add an error alert
+        this.addAlert('danger',error.name,error.description,5000);
+    }
+
+    addAlert(type,title,msg,duration) {
+        // add an alert to the alerts array
+        var alerts = this.state.alerts.slice()
+        alerts.push({key: new Date().getTime(), type: type, msg: msg, title: title, duration: duration})
         this.setState({
-            errors: newValues
+            alerts: alerts
         })
     }
 
@@ -57,7 +60,8 @@ class Posts extends Component {
         return (
             <div className="Posts">
             <div>
-                <h1>Posts</h1>
+                <Alerts alerts={this.state.alerts} />
+                <h1>Home</h1>
                 <PostInsert onInsert={this.handleInsert} onError={this.handleError} />
                 <PostList posts={this.state.posts} isLoaded={this.state.isLoaded} />
             </div>

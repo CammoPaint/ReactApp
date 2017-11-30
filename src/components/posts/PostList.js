@@ -7,6 +7,7 @@ class PostList extends Component {
     }
   
     render() {
+      // add a PostItem for every item in the posts array
       var items = [];
       if (this.props.isLoaded) {
         this.props.posts.forEach((post) => {
@@ -15,7 +16,7 @@ class PostList extends Component {
       }
   
       return (
-        <div className="container">
+        <div>
           {items}
         </div>
       )

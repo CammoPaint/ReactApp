@@ -3,7 +3,7 @@ import './App.css';
 import { Route } from 'react-router-dom'
 import Header from './components/header/Header'
 import Users from './components/users/Users'
-import Posts from './components/posts/Posts';
+import Posts from './components/posts/Posts'
 
 class App extends Component {
   constructor() {
@@ -12,10 +12,7 @@ class App extends Component {
     };
 
   }
-
-
   render() {
-
     return (
       <div className="App">
         <Header />    

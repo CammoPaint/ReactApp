@@ -22,22 +22,22 @@ class PostInsert extends Component {
       }
 
     handleSubmit(event) {
+        // create a new Post object
         const post = {
             title: this.state.title,
             body: this.state.body
-
         };
+        // call the service method
         PostService.post(post, (data) => {
             // send the new record up to component tree
             this.props.onInsert(data);
-            // show the alert
-            //this.alerts.push({key: new Date().getTime(), type: 'success', msg: 'New record added', title: 'Success', duration: 5000})
+            // clear the item
             this.setState ({
                 title: '',
                 body: ''
             });
           }, (response) => {
-            this.props.onError(response);
+              this.props.onError(response); // send the error back to the parent to handle
           })
 
         event.preventDefault();
@@ -45,6 +45,7 @@ class PostInsert extends Component {
 
     render() {
         return (
+            <div className="well">
             <form onSubmit={this.handleSubmit}>
                 <div className="form-group">
                     <label htmlFor="title">Title</label>
@@ -56,6 +57,7 @@ class PostInsert extends Component {
                 </div>
             <button type="submit" className="btn btn-default">Submit</button>
             </form>
+            </div>
         );
     }
 }
